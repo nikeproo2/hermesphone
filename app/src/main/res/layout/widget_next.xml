@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/widget_bg"
     android:orientation="vertical"
-    android:gravity="center_vertical"
-    android:padding="16dp">
+    android:padding="14dp">
 
+    <!-- ── ТЕКУЩИЙ ─────────────────────────────────────────────── -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,65 +14,131 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/tv_label"
+            android:id="@+id/cur_caption"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cap_now"
+            android:textColor="@color/accent"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/cur_subject"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/label_default"
-            android:textColor="@color/accent"
-            android:textSize="12sp"
+            android:text=""
+            android:textColor="@color/on_surface"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end" />
 
         <TextView
-            android:id="@+id/tv_hw"
+            android:id="@+id/cur_hw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
             android:background="@drawable/badge_hw"
-            android:paddingLeft="7dp"
-            android:paddingRight="7dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
             android:text="@string/hw"
             android:textColor="@color/hw_text"
-            android:textSize="10sp"
+            android:textSize="9sp"
             android:textStyle="bold"
             android:visibility="gone" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_subject"
+        android:id="@+id/cur_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/subject_default"
-        android:textColor="@color/on_surface"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        android:maxLines="2"
-        android:ellipsize="end" />
-
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="1dp"
         android:text=""
-        android:textColor="@color/on_surface_variant"
-        android:textSize="12sp"
+        android:textColor="@color/accent"
+        android:textSize="11sp"
         android:maxLines="1"
         android:ellipsize="end" />
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/cur_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="6dp"
         android:max="100"
         android:progress="0"
         android:progressDrawable="@drawable/progress_lesson"
         android:visibility="gone" />
+
+    <!-- ── РАЗДЕЛИТЕЛЬ ─────────────────────────────────────────── -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/stroke" />
+
+    <!-- ── СЛЕДУЮЩИЙ ───────────────────────────────────────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/next_caption"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cap_next"
+            android:textColor="@color/on_surface_variant"
+            android:textSize="9sp"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/next_subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textColor="@color/on_surface"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/next_hw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/badge_hw"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:text="@string/hw"
+            android:textColor="@color/hw_text"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/next_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="1dp"
+        android:text=""
+        android:textColor="@color/on_surface_variant"
+        android:textSize="11sp"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
 </LinearLayout>

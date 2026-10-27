@@ -13,7 +13,6 @@ import android.widget.RemoteViews;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class NextLessonWidget extends AppWidgetProvider {
 
@@ -52,60 +51,110 @@ public class NextLessonWidget extends AppWidgetProvider {
                 ? 7 : now.get(Calendar.DAY_OF_WEEK) - 1;
 
         @SuppressWarnings("unchecked")
-        List<ScheduleStore.Lesson>[] week = NextLesson.emptyWeek();
+        List<ScheduleStore.Lesson>[] week = new List[8];
         for (int d = 1; d <= 7; d++) {
-            NextLesson.putWeek(week, d, ScheduleStore.forDay(context, d));
+            week[d] = ScheduleStore.forDay(context, d);
         }
-        List<ScheduleStore.Lesson> today = week[isoToday];
-        NextLesson nl = NextLesson.compute(now, today.toArray(new ScheduleStore.Lesson[0]), week);
+        DayPlan plan = DayPlan.compute(now, week[isoToday], week);
 
-        switch (nl.kind) {
-            case NOW:
-                v.setTextViewText(R.id.tv_label,
-                        "Сейчас идёт · до " + ScheduleStore.hhmm(nl.lesson.endMin));
-                v.setViewVisibility(R.id.progress, View.VISIBLE);
-                v.setProgressBar(R.id.progress, 100, nl.progressPercent, false);
-                break;
-            case SOON:
-                v.setTextViewText(R.id.tv_label, "Через " + humanMinutes(nl.minutes));
-                v.setViewVisibility(R.id.progress, View.GONE);
-                break;
-            case LATER_TODAY:
-                v.setTextViewText(R.id.tv_label, "Следующий урок");
-                v.setViewVisibility(R.id.progress, View.GONE);
-                break;
-            case NEXT_DAY:
-                v.setTextViewText(R.id.tv_label, dayWord(nl.dayOffset));
-                v.setViewVisibility(R.id.progress, View.GONE);
-                break;
-            case DONE:
-                v.setTextViewText(R.id.tv_label, "На сегодня всё");
-                v.setViewVisibility(R.id.progress, View.GONE);
-                break;
-            default:
-                v.setTextViewText(R.id.tv_label, "Расписания нет");
-                v.setViewVisibility(R.id.progress, View.GONE);
-                break;
-        }
-
-        if (nl.lesson != null) {
-            v.setTextViewText(R.id.tv_subject, nl.lesson.subject);
-            String time = ScheduleStore.hhmm(nl.lesson.startMin) + " – "
-                    + ScheduleStore.hhmm(nl.lesson.endMin);
-            if (nl.lesson.room != null && !nl.lesson.room.isEmpty()) {
-                time += " · каб. " + nl.lesson.room;
-            }
-            v.setTextViewText(R.id.tv_time, time);
-            v.setViewVisibility(R.id.tv_hw,
-                    nl.lesson.homework ? View.VISIBLE : View.GONE);
-        } else {
-            v.setTextViewText(R.id.tv_subject,
-                    nl.kind == NextLesson.Kind.DONE ? "Отдыхай" : "—");
-            v.setTextViewText(R.id.tv_time, "");
-            v.setViewVisibility(R.id.tv_hw, View.GONE);
-        }
+        bindTop(context, v, plan);
+        bindBottom(context, v, plan);
 
         manager.updateAppWidget(id, v);
+    }
+
+    /** Верхняя строка: идёт урок — показываем его; иначе ближайший. */
+    private static void bindTop(Context context, RemoteViews v, DayPlan plan) {
+        if (plan.current != null) {
+            ScheduleStore.Lesson l = plan.current;
+            v.setTextViewText(R.id.cur_caption, "СЕЙЧАС");
+            v.setTextViewText(R.id.cur_subject, l.subject);
+            v.setTextViewText(R.id.cur_time,
+                    ScheduleStore.hhmm(l.startMin) + " – " + ScheduleStore.hhmm(l.endMin)
+                            + " · осталось " + humanMinutes(minutesLeft(nowMinutes(), l.endMin)));
+            v.setViewVisibility(R.id.cur_hw, l.homework ? View.VISIBLE : View.GONE);
+            v.setViewVisibility(R.id.cur_progress, View.VISIBLE);
+            v.setProgressBar(R.id.cur_progress, 100, plan.progressPercent, false);
+            return;
+        }
+
+        v.setViewVisibility(R.id.cur_progress, View.GONE);
+
+        if (plan.next != null && plan.nextDayOffset == 0) {
+            ScheduleStore.Lesson l = plan.next;
+            v.setTextViewText(R.id.cur_caption, "СЕЙЧАС");
+            v.setTextViewText(R.id.cur_subject, l.subject);
+            v.setTextViewText(R.id.cur_time,
+                    "нет урока · через " + humanMinutes(plan.minutesToNext)
+                            + " · " + ScheduleStore.hhmm(l.startMin));
+            v.setViewVisibility(R.id.cur_hw, l.homework ? View.VISIBLE : View.GONE);
+        } else if (plan.next != null) {
+            v.setTextViewText(R.id.cur_caption, "СЕЙЧАС");
+            v.setTextViewText(R.id.cur_subject, plan.next.subject);
+            v.setTextViewText(R.id.cur_time,
+                    dayWord(plan.nextDayOffset) + " · " + ScheduleStore.hhmm(plan.next.startMin));
+            v.setViewVisibility(R.id.cur_hw, plan.next.homework ? View.VISIBLE : View.GONE);
+        } else {
+            v.setTextViewText(R.id.cur_caption, "СЕЙЧАС");
+            v.setTextViewText(R.id.cur_subject, plan.emptyDay ? "Уроков нет" : "Свободно");
+            v.setTextViewText(R.id.cur_time, "");
+            v.setViewVisibility(R.id.cur_hw, View.GONE);
+        }
+    }
+
+    /** Нижняя строка: урок после текущего (или после ближайшего, если урока нет). */
+    private static void bindBottom(Context context, RemoteViews v, DayPlan plan) {
+        ScheduleStore.Lesson l;
+        if (plan.current != null) {
+            l = plan.next;
+        } else if (plan.next != null && plan.nextDayOffset == 0) {
+            l = lessonAfter(context, plan.next);
+        } else {
+            l = null;
+        }
+
+        v.setTextViewText(R.id.next_caption, "ДАЛЬШЕ");
+
+        if (l == null) {
+            v.setTextViewText(R.id.next_subject,
+                    plan.current != null ? "На сегодня всё" : "—");
+            v.setTextViewText(R.id.next_time, "");
+            v.setViewVisibility(R.id.next_hw, View.GONE);
+            return;
+        }
+
+        v.setTextViewText(R.id.next_subject, l.subject);
+
+        int nowMin = nowMinutes();
+        int from = plan.current != null ? plan.current.endMin
+                : (plan.next != null ? plan.next.startMin : nowMin);
+        int gap = Math.max(0, l.startMin - from);
+
+        String sub = ScheduleStore.hhmm(l.startMin) + " – " + ScheduleStore.hhmm(l.endMin);
+        if (gap > 0) sub += " · через " + gap + " мин";
+        v.setTextViewText(R.id.next_time, sub);
+        v.setViewVisibility(R.id.next_hw, l.homework ? View.VISIBLE : View.GONE);
+    }
+
+    private static ScheduleStore.Lesson lessonAfter(Context context, ScheduleStore.Lesson first) {
+        Calendar now = Calendar.getInstance();
+        int iso = now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
+                ? 7 : now.get(Calendar.DAY_OF_WEEK) - 1;
+        boolean passed = false;
+        for (ScheduleStore.Lesson l : ScheduleStore.forDay(context, iso)) {
+            if (passed) return l;
+            if (l.startMin == first.startMin && l.num == first.num) passed = true;
+        }
+        return null;
+    }
+
+    private static int nowMinutes() {
+        Calendar c = Calendar.getInstance();
+        return c.get(Calendar.HOUR_OF_DAY) * 60 + c.get(Calendar.MINUTE);
+    }
+
+    private static int minutesLeft(int now, int endMin) {
+        return Math.max(0, endMin - now);
     }
 
     private static String humanMinutes(int m) {

@@ -5,4 +5,6 @@
     <string name="label_default">Следующий урок</string>
     <string name="subject_default">—</string>
     <string name="hw">ДЗ</string>
+    <string name="cap_now">СЕЙЧАС</string>
+    <string name="cap_next">ДАЛЬШЕ</string>
 </resources>
