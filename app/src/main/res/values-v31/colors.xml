@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material You: цвета подхватываются из обоев на Android 12+ -->
+    <color name="accent">@android:color/system_accent1_100</color>
+    <color name="hw_bg">@android:color/system_accent1_200</color>
+    <color name="hw_text">@android:color/system_accent1_900</color>
+</resources>

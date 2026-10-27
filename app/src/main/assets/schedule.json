@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "updated": "2026-10-27",
+  "days": {
+    "1": [
+      {"n": 1, "start": "08:00", "end": "08:40", "subject": "Разговоры о важном", "hw": true},
+      {"n": 2, "start": "08:55", "end": "09:40", "subject": "ОБЗР", "hw": true},
+      {"n": 3, "start": "09:55", "end": "10:40", "subject": "Русский язык", "hw": true},
+      {"n": 4, "start": "10:55", "end": "11:40", "subject": "Алгебра", "hw": true},
+      {"n": 5, "start": "11:55", "end": "12:40", "subject": "Алгебра", "hw": false},
+      {"n": 6, "start": "12:55", "end": "13:40", "subject": "Литература", "hw": true},
+      {"n": 7, "start": "13:55", "end": "14:40", "subject": "История", "hw": true}
+    ],
+    "2": [
+      {"n": 1, "start": "08:00", "end": "08:40", "subject": "Русский язык", "hw": true},
+      {"n": 2, "start": "08:55", "end": "09:40", "subject": "История", "hw": true},
+      {"n": 3, "start": "09:55", "end": "10:40", "subject": "Английский", "hw": true},
+      {"n": 4, "start": "10:55", "end": "11:40", "subject": "Английский", "hw": false},
+      {"n": 5, "start": "11:55", "end": "12:40", "subject": "Русский язык", "hw": false},
+      {"n": 6, "start": "12:55", "end": "13:40", "subject": "Информатика", "hw": true},
+      {"n": 7, "start": "13:55", "end": "14:40", "subject": "Геометрия", "hw": true}
+    ],
+    "3": [
+      {"n": 1, "start": "08:00", "end": "08:40", "subject": "Алгебра", "hw": true},
+      {"n": 2, "start": "08:55", "end": "09:40", "subject": "Алгебра", "hw": false},
+      {"n": 3, "start": "09:55", "end": "10:40", "subject": "Физика", "hw": true},
+      {"n": 4, "start": "10:55", "end": "11:40", "subject": "Обществознание", "hw": true},
+      {"n": 5, "start": "11:55", "end": "12:40", "subject": "География", "hw": true},
+      {"n": 6, "start": "12:55", "end": "13:40", "subject": "Биология", "hw": true},
+      {"n": 7, "start": "13:55", "end": "14:40", "subject": "Биология", "hw": false}
+    ],
+    "4": [
+      {"n": 1, "start": "08:55", "end": "09:40", "subject": "Английский", "hw": true},
+      {"n": 2, "start": "09:55", "end": "10:40", "subject": "Физкультура", "hw": false},
+      {"n": 3, "start": "10:55", "end": "11:40", "subject": "География", "hw": true},
+      {"n": 4, "start": "11:55", "end": "12:40", "subject": "Химия", "hw": true},
+      {"n": 5, "start": "12:55", "end": "13:40", "subject": "Геометрия", "hw": true},
+      {"n": 6, "start": "13:55", "end": "14:40", "subject": "Вероятность и статистика", "hw": true}
+    ],
+    "5": [
+      {"n": 1, "start": "08:00", "end": "08:40", "subject": "Физкультура", "hw": false},
+      {"n": 2, "start": "08:55", "end": "09:40", "subject": "Физика", "hw": true},
+      {"n": 3, "start": "09:55", "end": "10:40", "subject": "Физика", "hw": false},
+      {"n": 4, "start": "10:55", "end": "11:40", "subject": "Литература", "hw": true},
+      {"n": 5, "start": "11:55", "end": "12:40", "subject": "Литература", "hw": false},
+      {"n": 6, "start": "12:55", "end": "13:40", "subject": "Родной язык", "hw": true}
+    ]
+  }
+}

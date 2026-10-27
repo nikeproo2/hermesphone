@@ -10,6 +10,7 @@ public class TickReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        HermesWidget.refreshAll(context);
+        if (intent == null || !ACTION_TICK.equals(intent.getAction())) return;
+        NextLessonWidget.refreshAll(context);
     }
 }

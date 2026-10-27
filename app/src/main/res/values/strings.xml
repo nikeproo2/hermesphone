@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hermes Widget</string>
-    <string name="widget_desc">Часы, дата и заряд батареи</string>
+    <string name="app_name">Следующий урок</string>
+    <string name="widget_desc">Какой урок сейчас и что дальше</string>
+    <string name="label_default">Следующий урок</string>
+    <string name="subject_default">—</string>
+    <string name="hw">ДЗ</string>
 </resources>

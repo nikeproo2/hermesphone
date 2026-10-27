@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent">#FF8AB4F8</color>
+    <color name="on_surface">#FFFFFFFF</color>
+    <color name="on_surface_variant">#B3FFFFFF</color>
+    <color name="card">#E61A1A1E</color>
+    <color name="stroke">#33FFFFFF</color>
+    <color name="track">#33FFFFFF</color>
+    <color name="hw_text">#FF0B1B33</color>
+    <color name="hw_bg">#FF8AB4F8</color>
+</resources>
