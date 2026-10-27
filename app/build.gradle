@@ -10,14 +10,25 @@ android {
         applicationId "com.nikeproo2.hermeswidget"
         minSdk 26
         targetSdk 34
-        versionCode 2
-        versionName "2.0"
+        versionCode 3
+        versionName "2.1"
+    }
+
+    signingConfigs {
+        release {
+            // Постоянный ключ: обновления ставятся поверх без удаления приложения.
+            // Репозиторий приватный, ключ лежит в нём осознанно.
+            storeFile rootProject.file('release.keystore')
+            storePassword 'hermeswidget'
+            keyAlias 'hermes'
+            keyPassword 'hermeswidget'
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 
