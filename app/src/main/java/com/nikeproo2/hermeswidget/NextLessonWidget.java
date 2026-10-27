@@ -45,20 +45,32 @@ public class NextLessonWidget extends AppWidgetProvider {
 
     private static void render(Context context, AppWidgetManager manager, int id) {
         RemoteViews v = new RemoteViews(context.getPackageName(), R.layout.widget_next);
+        try {
+            Calendar now = Calendar.getInstance();
+            int isoToday = now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
+                    ? 7 : now.get(Calendar.DAY_OF_WEEK) - 1;
 
-        Calendar now = Calendar.getInstance();
-        int isoToday = now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
-                ? 7 : now.get(Calendar.DAY_OF_WEEK) - 1;
+            @SuppressWarnings("unchecked")
+            List<ScheduleStore.Lesson>[] week = new List[8];
+            for (int d = 1; d <= 7; d++) {
+                week[d] = ScheduleStore.forDay(context, d);
+            }
+            DayPlan plan = DayPlan.compute(now, week[isoToday], week);
 
-        @SuppressWarnings("unchecked")
-        List<ScheduleStore.Lesson>[] week = new List[8];
-        for (int d = 1; d <= 7; d++) {
-            week[d] = ScheduleStore.forDay(context, d);
+            bindTop(context, v, plan);
+            bindBottom(context, v, plan);
+        } catch (Exception e) {
+            android.util.Log.e("NextLessonWidget", "render failed", e);
+            v.setViewVisibility(R.id.cur_progress, View.GONE);
+            v.setTextViewText(R.id.cur_caption, "СЕЙЧАС");
+            v.setTextViewText(R.id.cur_subject, "Ошибка данных");
+            v.setTextViewText(R.id.cur_time, "");
+            v.setViewVisibility(R.id.cur_hw, View.GONE);
+            v.setTextViewText(R.id.next_caption, "ДАЛЬШЕ");
+            v.setTextViewText(R.id.next_subject, "—");
+            v.setTextViewText(R.id.next_time, "");
+            v.setViewVisibility(R.id.next_hw, View.GONE);
         }
-        DayPlan plan = DayPlan.compute(now, week[isoToday], week);
-
-        bindTop(context, v, plan);
-        bindBottom(context, v, plan);
 
         manager.updateAppWidget(id, v);
     }
