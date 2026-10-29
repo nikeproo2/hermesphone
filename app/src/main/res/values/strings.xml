@@ -7,4 +7,8 @@
     <string name="hw">ДЗ</string>
     <string name="cap_now">СЕЙЧАС</string>
     <string name="cap_next">ДАЛЬШЕ</string>
+    <string name="adb_desc">Включить или выключить отладку по Wi-Fi</string>
+    <string name="adb_label">ОТЛАДКА ПО WI-FI</string>
+    <string name="adb_off">ВЫКЛ</string>
+    <string name="adb_hint_on">нажми, чтобы включить</string>
 </resources>
